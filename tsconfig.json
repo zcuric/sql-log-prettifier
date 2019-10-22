@@ -1,25 +1,30 @@
 {
+  "include": ["src", "src/types", "test"],
   "compilerOptions": {
-    "module": "commonjs",
-    "watch": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "suppressImplicitAnyIndexErrors": true,
-
-    "target": "es6",
-    "noImplicitAny": true,
-    "moduleResolution": "node",
+    "target": "es5",
+    "module": "esnext",
+    "lib": ["esnext"],
+    "importHelpers": true,
+    "declaration": true,
     "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
+    "rootDir": "./",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
     "paths": {
-      "*": [
-        "node_modules/*",
-        "src/types/*"
-      ]
-    }
-  },
-  "include": [
-      "src/**/*"
-  ]
+      "*": ["src/*", "node_modules/*"]
+    },
+    "esModuleInterop": true
+  }
 }
