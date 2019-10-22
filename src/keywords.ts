@@ -24,7 +24,7 @@ const topLevelWords = [
   'UNION',
   'UPDATE',
   'VALUES',
-  'WHERE'
+  'WHERE',
 ];
 
 const newLineWords = [
@@ -42,7 +42,7 @@ const newLineWords = [
   'RIGHT JOIN',
   'RIGHT OUTER JOIN',
   'WHEN',
-  'XOR'
+  'XOR',
 ];
 
 const otherWords = [
@@ -317,12 +317,11 @@ const otherWords = [
   'WITH',
   'WORK',
   'WRITE',
-  'YEAR_MONTH'
+  'YEAR_MONTH',
 ];
-
 
 export default {
   topLevelWords,
   newLineWords,
-  otherWords
-}
+  otherWords,
+};

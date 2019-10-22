@@ -1,80 +1,75 @@
-import chalk from "chalk";
-import sqlFormatter from "sql-formatter";
+import chalk from 'chalk';
+import sqlFormatter from 'sql-formatter';
 import keywords from './keywords';
+import { Options, OutputSettings, Settings } from 'types';
 
-type Options = {
-  format: boolean,
-  settings: {
-    topLevelWords?: Object
-    newLineWords?: Object
-    otherWords?: Object
-    strings?: Object
-    numbers?: Object
-  }
-}
-
-const defaultOptions:Options = {
+const defaultOptions: Options = {
   format: true,
+  noColors: false,
   settings: {
     topLevelWords: {
-      color: '#fcba03',
-      modifiers: ['bold', 'italic', 'dim', 'bgBlue'],
+      color: '#E53935',
+      modifiers: ['bold'],
     },
     newLineWords: {
-      color: '#42b8ac',
+      color: '#6182B8',
       modifiers: ['bold'],
     },
     otherWords: {
-      color: '#612d75',
+      color: '#7C4DFF',
       modifiers: ['bold'],
     },
     strings: {
-      color: "#943934", 
-      modifiers: []
+      color: '#945EB8',
+      modifiers: [],
     },
     numbers: {
-      color: "#3ba86a",
-      modifiers: []
-    }
-  }
-}
+      color: '#91B859',
+      modifiers: [],
+    },
+  },
+};
 
-const substitute = (word:string, { color, modifiers }:any = {}):string => {
+const substitute = (
+  word: string,
+  { color, modifiers = [] }: OutputSettings
+) => {
   // @ts-ignore
   chalk.customColor = chalk.hex(color);
   const chalkModifiers = ['customColor', ...modifiers].join('.');
-  return chalk`{${chalkModifiers} ${word}}`
+  return chalk`{${chalkModifiers} ${word}}`;
 };
 
+const colorKeywords = (query: string, words: Object, settings: Settings) => {
+  const pattern = (word: string) => new RegExp(`\\b${word}\\b`, 'gmi');
 
-const colorKeywords =(query:string, words:Object, settings:Options['settings']) => {
-  const pattern = (word:string) => new RegExp(`\\b${word}\\b`, 'gmi');
-
-  Object.keys(words).forEach((key:string) => {
-    words[key].forEach((word:string) => {
+  Object.keys(words).forEach((key: string) => {
+    words[key].forEach((word: string) => {
       query = query.replace(pattern(word), substitute(word, settings[key]));
-    })
-  })
-
-  return query;
-}
-
-const colorValues = (query:string, settings:Options['settings']) => {
-  const regexes = {
-    strings: /('\w+')/gmi,
-    numbers: /(\s\b\d+\b)/gmi,
-  };
-
-  Object.keys(regexes).forEach((reg:string) => {
-    query = query.replace(regexes[reg], substitute('$1', settings[reg]))
+    });
   });
 
   return query;
-}
+};
 
-export const highlightWords = (query:string, options:Options = defaultOptions) => {
-  const { format, settings } = options;
+const colorValues = (query: string, settings: Settings) => {
+  const regexes = {
+    strings: /('\w+')/gim,
+    numbers: /(\s\b\d+\b)/gim,
+  };
+
+  Object.keys(regexes).forEach((reg: string) => {
+    query = query.replace(regexes[reg], substitute('$1', settings[reg]));
+  });
+
+  return query;
+};
+
+export const prettify = (query: string, options: Options) => {
+  const { format, noColors } = { ...defaultOptions, ...options };
+  const settings = { ...defaultOptions.settings, ...options.settings };
   if (format) query = sqlFormatter.format(query);
+  if (noColors) return query;
   query = colorKeywords(query, keywords, settings);
   query = colorValues(query, settings);
   return query;
