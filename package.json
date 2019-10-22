@@ -1,0 +1,44 @@
+{
+  "name": "sql-log-prettifier",
+  "version": "0.0.0",
+  "description": "SQL query prettifier for your favorite logger",
+  "main": "dist/index.js",
+  "repository": {
+    "url": "zcuric/sql-log-prettifier",
+    "type": "git"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "nodemon test/index.js",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix"
+  },
+  "keywords": [
+    "sql",
+    "logger",
+    "log",
+    "pretty print",
+    "sequelize",
+    "logging"
+  ],
+  "author": "Zdravko Ćurić <zcuric@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "sql-formatter": "^2.3.3"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/node": "^12.11.1",
+    "@types/sql-formatter": "^2.3.0",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
+    "eslint": "^6.5.1",
+    "eslint-config-semistandard": "^15.0.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^1.19.4"
+  }
+}
