@@ -55,5 +55,9 @@
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es5"
-  }
+  },
+  "files": [
+    "dist",
+    "src"
+  ]
 }
