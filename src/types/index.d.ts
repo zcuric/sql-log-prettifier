@@ -5,14 +5,14 @@ export type Options = {
 };
 
 export type Settings = {
-  topLevelWords?: Object;
-  newLineWords?: Object;
-  otherWords?: Object;
+  functions?: Object;
+  keywords?: Object;
   strings?: Object;
   numbers?: Object;
+  operators?: Object;
 };
 
 export type OutputSettings = {
-  color: string;
+  color: Object | string;
   modifiers: string[];
 };

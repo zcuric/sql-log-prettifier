@@ -28,7 +28,7 @@ describe('sql prettify', () => {
 
   it('should not color SQL', () => {
     const settings = {
-      topLevelWords: {
+      keywords: {
         color: '#FF0000',
       },
     };
@@ -38,7 +38,7 @@ describe('sql prettify', () => {
 
   it('should color SQL', () => {
     const settings = {
-      topLevelWords: {
+      keywords: {
         color: '#FF0000',
       },
       numbers: {
@@ -52,7 +52,7 @@ describe('sql prettify', () => {
 
   it('should color SQL and add bold modifier', () => {
     const settings = {
-      topLevelWords: {
+      keywords: {
         color: '#FF0000', // \u001b[38;2;255;0;0m
         modifiers: ['bold'], // \u001b[1m
       },

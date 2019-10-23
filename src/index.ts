@@ -7,32 +7,30 @@ const defaultOptions: Options = {
   format: true,
   noColors: false,
   settings: {
-    topLevelWords: {
-      color: '#E53935',
+    functions: {
+      color: '#ff5555',
       modifiers: ['bold'],
     },
-    newLineWords: {
-      color: '#6182B8',
+    keywords: {
+      color: '#ff5555',
       modifiers: ['bold'],
     },
-    otherWords: {
-      color: '#7C4DFF',
+    operators: {
+      color: '#91B859',
       modifiers: ['bold'],
     },
     strings: {
-      color: '#945EB8',
-      modifiers: [],
+      color: '#FFFFF',
     },
     numbers: {
-      color: '#91B859',
-      modifiers: [],
+      color: '#50fa7b',
     },
   },
 };
 
 const substitute = (
   word: string,
-  { color, modifiers = [] }: OutputSettings
+  { color = '#FFFFFF', modifiers = [] }: OutputSettings
 ) => {
   // @ts-ignore
   chalk.customColor = chalk.hex(color);
