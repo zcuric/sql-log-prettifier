@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "SQL query prettifier for your favorite logger",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "url": "zcuric/sql-log-prettifier",
     "type": "git"
