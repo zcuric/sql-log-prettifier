@@ -32,10 +32,11 @@ const substitute = (
   word: string,
   { color = '#FFFFFF', modifiers = [] }: OutputSettings
 ) => {
+  const ctx = chalk.constructor({ level: 3 });
   // @ts-ignore
-  chalk.customColor = chalk.hex(color);
+  ctx.customColor = ctx.hex(color);
   const chalkModifiers = ['customColor', ...modifiers].join('.');
-  return chalk`{${chalkModifiers} ${word}}`;
+  return ctx`{${chalkModifiers} ${word}}`;
 };
 
 const colorKeywords = (query: string, words: Object, settings: Settings) => {
