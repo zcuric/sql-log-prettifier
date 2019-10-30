@@ -2,7 +2,7 @@
 
 SQL query prettifier for your favorite logger
 
-### Usage 
+## Usage 
 
 ```sh
 npm install sql-log-prettifier
@@ -19,13 +19,66 @@ const unformattedAndUglySql = `SELECT * FROM custom_table WHERE id = 1 AND name 
 console.log(prettify(unformattedAndUglySql));
 ```
 Output will look something like this: 
-<img
-  src="blob:https://carbon.now.sh/2cab0d4c-ed13-4835-9261-171c049bd637"
-  style="transform:scale(0.7); width:1024px; height:473px; border:0; overflow:hidden;"
-  sandbox="allow-scripts allow-same-origin">
-</img>
+
+<img src="./carbon.png"></img>
+
+## Settings 
+
+`prettify` function accepts `settings` as the second argument.
+
+Default settings are: 
+```js
+const defaultSettings = {
+  format: true,
+  noColors: false,
+  settings: {
+    functions: {
+      color: '#ff5555',
+      modifiers: ['bold'],
+    },
+    keywords: {
+      color: '#ff5555',
+      modifiers: ['bold'],
+    },
+    operators: {
+      color: '#91B859',
+      modifiers: ['bold'],
+    },
+    strings: {
+      color: '#FFFFF',
+    },
+    numbers: {
+      color: '#50fa7b',
+    },
+  },
+};
+```
 
 ### TODO: 
 - Add examples for popular loggers (`pino`, `winston`)
-- Polish 
+- Update README.md 
 - Anything else that needs to be done :construction_worker:
+
+
+## Development
+
+`sql-log-prettifer` is built with [`tsdx`](https://github.com/jaredpalmer/tsdx).
+
+```
+# Running examples
+npm run start
+
+# Running tests
+npm run test
+
+# Running build
+npm run build
+```
+
+## Contributing
+
+All contributions are welcome.
+
+## License
+
+MIT @ Zdravko Ćurić [(zcuric)](https://github.com/zcuric)
