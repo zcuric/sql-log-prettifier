@@ -64,7 +64,7 @@ const colorValues = (query: string, settings: Settings) => {
   return query;
 };
 
-export const prettify = (query: string, options: Options) => {
+export const prettify = (query: string, options: Options = {}) => {
   const { format, noColors } = { ...defaultOptions, ...options };
   const settings = { ...defaultOptions.settings, ...options.settings };
   if (format) query = sqlFormatter.format(query);
