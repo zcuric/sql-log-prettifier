@@ -1,6 +1,6 @@
 {
   "name": "sql-log-prettifier",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "SQL query prettifier for your favorite logger",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
