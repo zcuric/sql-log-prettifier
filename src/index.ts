@@ -32,7 +32,7 @@ const substitute = (
   word: string,
   { color = '#FFFFFF', modifiers = [] }: OutputSettings
 ) => {
-  const ctx = chalk.constructor({ level: 3 });
+  const ctx = new chalk.Instance({ level: 3 });
   // @ts-ignore
   ctx.customColor = ctx.hex(color);
   const chalkModifiers = ['customColor', ...modifiers].join('.');
