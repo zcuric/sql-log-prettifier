@@ -11,9 +11,11 @@ yarn add sql-log-prettifier
 ```
 
 In your project require or import `sql-log-prettifier`
+Requires Node.js 20 or newer. Ships both ESM and CommonJS builds.
+
 ```js
-const { prettify } = require('sql-log-prettifier');
-// import { prettify } from 'sql-log-prettifier';
+import { prettify } from 'sql-log-prettifier';
+// const { prettify } = require('sql-log-prettifier');
 
 const unformattedAndUglySql = `SELECT * FROM custom_table WHERE id = 1 AND name = 'Test'`;
 console.log(prettify(unformattedAndUglySql));
@@ -45,7 +47,7 @@ const defaultSettings = {
       modifiers: ['bold'],
     },
     strings: {
-      color: '#FFFFF',
+      color: '#FFFFFF',
     },
     numbers: {
       color: '#50fa7b',
@@ -62,16 +64,21 @@ const defaultSettings = {
 
 ## Development
 
-`sql-log-prettifer` is built with [`tsdx`](https://github.com/jaredpalmer/tsdx).
+`sql-log-prettifier` is built with [`tsup`](https://tsup.egoist.dev) and tested with
+[`vitest`](https://vitest.dev).
 
-```
-# Running examples
-npm run start
+```sh
+# Rebuild on change
+npm run dev
 
-# Running tests
-npm run test
+# Run the tests
+npm test
 
-# Running build
+# Type check and lint
+npm run typecheck
+npm run lint
+
+# Build
 npm run build
 ```
 

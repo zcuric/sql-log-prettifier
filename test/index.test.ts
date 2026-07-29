@@ -1,4 +1,5 @@
-import { prettify } from '../src';
+import { describe, expect, it } from 'vitest';
+import { prettify } from '../src/index.js';
 
 const sampleQuery = `SELECT * FROM custom_table WHERE id = 1 AND name = 'Test'`;
 const resultQuery = `SELECT
@@ -42,7 +43,7 @@ describe('sql prettify', () => {
         color: '#FF0000',
       },
       numbers: {
-        color: '#33cc33', // \u001b[38;2;51;204;51m
+        color: '#33cc33',
       },
     };
     const coloredQuery = prettify(sampleQuery, { settings });
@@ -53,13 +54,20 @@ describe('sql prettify', () => {
   it('should color SQL and add bold modifier', () => {
     const settings = {
       keywords: {
-        color: '#FF0000', // \u001b[38;2;255;0;0m
-        modifiers: ['bold'], // \u001b[1m
+        color: '#FF0000',
+        modifiers: ['bold'],
       },
     };
     const coloredQuery = prettify(sampleQuery, { settings });
     expect(JSON.stringify(coloredQuery)).toContain(
       '\\u001b[38;2;255;0;0m\\u001b[1m'
     );
+  });
+
+  it('should ignore unknown modifiers instead of throwing', () => {
+    const coloredQuery = prettify(sampleQuery, {
+      settings: { keywords: { color: '#FF0000', modifiers: ['nope'] } },
+    });
+    expect(JSON.stringify(coloredQuery)).toContain('\\u001b[38;2;255;0;0m');
   });
 });

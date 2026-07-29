@@ -1,11 +1,28 @@
 {
   "name": "sql-log-prettifier",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "SQL query prettifier for your favorite logger",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "repository": {
-    "url": "zcuric/sql-log-prettifier",
+    "url": "git+https://github.com/zcuric/sql-log-prettifier.git",
     "type": "git"
   },
   "bugs": {
@@ -13,10 +30,14 @@
   },
   "homepage": "https://github.com/zcuric/sql-log-prettifier#readme",
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "prepare": "husky"
   },
   "keywords": [
     "sql",
@@ -29,35 +50,27 @@
   "author": "Zdravko Ćurić <zcuric@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^4.1.0",
-    "sql-formatter": "^2.3.3"
+    "ansis": "^4.3.1",
+    "sql-formatter": "^15.8.2"
   },
   "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.8",
-    "@types/sql-formatter": "^2.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.4.1",
-    "@typescript-eslint/parser": "^4.4.1",
-    "eslint": "^7.11.0",
-    "husky": "^4.3.0",
-    "tsdx": "^0.14.0",
-    "tslib": "^2.0.3",
-    "typescript": "^4.0.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.10.1",
+    "eslint": "^10.8.0",
+    "husky": "^9.1.7",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   },
   "files": [
     "dist",
     "src"
-  ]
+  ],
+  "allowScripts": {
+    "esbuild@0.28.1": true
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
+  }
 }

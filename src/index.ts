@@ -1,75 +1,102 @@
-import chalk from 'chalk';
-import sqlFormatter from 'sql-formatter';
-import keywords from './keywords';
-import { Options, OutputSettings, Settings } from 'types';
+import { Ansis } from 'ansis';
+import { format as formatSql } from 'sql-formatter';
+import keywords from './keywords.js';
+import type {
+  Options,
+  OutputSettings,
+  Settings,
+  SettingsKey,
+} from './types.js';
 
-const defaultOptions: Options = {
-  format: true,
-  noColors: false,
-  settings: {
-    functions: {
-      color: '#ff5555',
-      modifiers: ['bold'],
-    },
-    keywords: {
-      color: '#ff5555',
-      modifiers: ['bold'],
-    },
-    operators: {
-      color: '#91B859',
-      modifiers: ['bold'],
-    },
-    strings: {
-      color: '#FFFFF',
-    },
-    numbers: {
-      color: '#50fa7b',
-    },
+export type { Options, OutputSettings, Settings, SettingsKey };
+
+const defaultSettings: Required<Settings> = {
+  functions: {
+    color: '#ff5555',
+    modifiers: ['bold'],
+  },
+  keywords: {
+    color: '#ff5555',
+    modifiers: ['bold'],
+  },
+  operators: {
+    color: '#91B859',
+    modifiers: ['bold'],
+  },
+  strings: {
+    color: '#FFFFFF',
+  },
+  numbers: {
+    color: '#50fa7b',
   },
 };
 
+const defaultOptions: Required<Omit<Options, 'settings'>> = {
+  format: true,
+  noColors: false,
+};
+
+// Force truecolor: the prettified query is usually handed to a logger rather
+// than written straight to a TTY, where auto-detection would strip the colors.
+const ansis = new Ansis(3);
+
 const substitute = (
   word: string,
-  { color = '#FFFFFF', modifiers = [] }: OutputSettings
+  { color = '#FFFFFF', modifiers = [] }: OutputSettings = {}
 ) => {
-  const ctx = new chalk.Instance({ level: 3 });
-  // @ts-ignore
-  ctx.customColor = ctx.hex(color);
-  const chalkModifiers = ['customColor', ...modifiers].join('.');
-  return ctx`{${chalkModifiers} ${word}}`;
+  const style = modifiers.reduce<Ansis>(
+    (styled, modifier) =>
+      (styled as unknown as Record<string, Ansis | undefined>)[modifier] ??
+      styled,
+    ansis.hex(color)
+  );
+  return style(word);
 };
 
-const colorKeywords = (query: string, words: Object, settings: Settings) => {
-  const pattern = (word: string) => new RegExp(`\\b${word}\\b`, 'gmi');
+const escapeRegExp = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  Object.keys(words).forEach((key: string) => {
-    words[key].forEach((word: string) => {
-      query = query.replace(pattern(word), substitute(word, settings[key]));
-    });
-  });
+const colorKeywords = (query: string, settings: Required<Settings>) => {
+  const pattern = (word: string) =>
+    new RegExp(`\\b${escapeRegExp(word)}\\b`, 'gmi');
+
+  for (const [key, words] of Object.entries(keywords)) {
+    const wordSettings = settings[key as SettingsKey];
+    for (const word of words) {
+      // Replacer function so `$`-sequences in the styled output stay literal.
+      query = query.replace(pattern(word), () => substitute(word, wordSettings));
+    }
+  }
 
   return query;
 };
 
-const colorValues = (query: string, settings: Settings) => {
-  const regexes = {
-    strings: /('\w+')/gim,
-    numbers: /(\s\b\d+\b)/gim,
-  };
+const valuePatterns: Record<'strings' | 'numbers', RegExp> = {
+  strings: /('\w+')/gim,
+  numbers: /(\s\b\d+\b)/gim,
+};
 
-  Object.keys(regexes).forEach((reg: string) => {
-    query = query.replace(regexes[reg], substitute('$1', settings[reg]));
-  });
+const colorValues = (query: string, settings: Required<Settings>) => {
+  for (const [key, regex] of Object.entries(valuePatterns)) {
+    query = query.replace(regex, (match) =>
+      substitute(match, settings[key as SettingsKey])
+    );
+  }
 
   return query;
 };
 
-export const prettify = (query: string, options: Options = {}) => {
+export const prettify = (query: string, options: Options = {}): string => {
   const { format, noColors } = { ...defaultOptions, ...options };
-  const settings = { ...defaultOptions.settings, ...options.settings };
-  if (format) query = sqlFormatter.format(query);
+  const settings: Required<Settings> = {
+    ...defaultSettings,
+    ...options.settings,
+  };
+  if (format) query = formatSql(query);
   if (noColors) return query;
-  query = colorKeywords(query, keywords, settings);
+  query = colorKeywords(query, settings);
   query = colorValues(query, settings);
   return query;
 };
+
+export default { prettify };
