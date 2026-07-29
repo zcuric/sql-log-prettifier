@@ -10,8 +10,8 @@ npm install sql-log-prettifier
 yarn add sql-log-prettifier
 ```
 
-In your project require or import `sql-log-prettifier`
-Requires Node.js 20 or newer. Ships both ESM and CommonJS builds.
+Requires Node.js 20 or newer. Ships both ESM and CommonJS builds, so you can
+either import or require `sql-log-prettifier`:
 
 ```js
 import { prettify } from 'sql-log-prettifier';
@@ -58,8 +58,12 @@ const defaultSettings = {
 
 ### TODO: 
 - Add examples for popular loggers (`pino`, `winston`)
-- Update README.md 
 - Anything else that needs to be done :construction_worker:
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md). Note that `0.2.0` requires Node.js 20+ and
+is ESM-first; see the entry for the full list of breaking changes.
 
 
 ## Development
