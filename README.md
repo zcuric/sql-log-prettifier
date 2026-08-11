@@ -1,3 +1,5 @@
+
+
 # SQL log prettifier
 
 SQL query prettifier for your favorite logger
@@ -26,7 +28,7 @@ Output will look something like this:
 
 ## Settings 
 
-`prettify` function accepts `settings` as the second argument.
+`prettify` accepts an options object as the second argument, which supports `format`, `noColors`, and `settings`.
 
 Default settings are: 
 ```js
